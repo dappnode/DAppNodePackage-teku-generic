@@ -1,0 +1,16 @@
+[
+  {
+    "labels": {
+      "package": "teku-gnosis.dnp.dappnode.eth",
+      "service": "beacon-chain.teku-gnosis.dappnode"
+    },
+    "targets": ["beacon-chain.teku-gnosis.dappnode:8008"]
+  },
+  {
+    "labels": {
+      "package": "teku-gnosis.dnp.dappnode.eth",
+      "service": "validator.teku-gnosis.dappnode"
+    },
+    "targets": ["validator.teku-gnosis.dappnode:8008"]
+  }
+]

@@ -1,0 +1,14 @@
+version: "3.5"
+services:
+  beacon-chain:
+    build:
+      args:
+        NETWORK: lukso
+        P2P_PORT: 9905
+    ports:
+      - "9905:9905/tcp"
+      - "9905:9905/udp"
+  validator:
+    build:
+      args:
+        NETWORK: lukso

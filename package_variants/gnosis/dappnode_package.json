@@ -1,0 +1,16 @@
+{
+  "name": "teku-gnosis.dnp.dappnode.eth",
+  "version": "0.1.13",
+  "links": {
+    "ui": "http://brain.web3signer-gnosis.dappnode",
+    "homepage": "https://docs.teku.consensys.net",
+    "readme": "https://github.com/ConsenSys/teku/blob/master/README.md",
+    "docs": "https://docs.teku.consensys.net"
+  },
+  "globalEnvs": [
+    {
+      "envs": ["EXECUTION_CLIENT_GNOSIS"],
+      "services": ["beacon-chain"]
+    }
+  ]
+}

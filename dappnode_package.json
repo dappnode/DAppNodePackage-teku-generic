@@ -1,0 +1,31 @@
+{
+  "upstream": [
+    {
+      "repo": "ConsenSys/teku",
+      "version": "24.6.1",
+      "arg": "UPSTREAM_VERSION"
+    }
+  ],
+  "architectures": ["linux/amd64"],
+  "shortDescription": "Teku Beacon chain + validator",
+  "description": "Teku implementation of Beacon chain + validator",
+  "type": "service",
+  "author": "DAppNode Association <admin@dappnode.io> (https://github.com/dappnode)",
+  "categories": ["Blockchain", "ETH2.0"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dappnode/DAppNodePackage-teku-generic.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dappnode/DAppNodePackage-teku-generic/issues"
+  },
+  "license": "Apache-2.0",
+  "chain": {
+    "driver": "ethereum-beacon-chain",
+    "serviceName": "beacon-chain",
+    "portNumber": 3500
+  },
+  "warnings": {
+    "onRemove": "Make sure your web3signer does not have this client selected or you will stop validating! (Packages > web3signer > config > client)"
+  }
+}

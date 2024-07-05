@@ -1,0 +1,16 @@
+[
+  {
+    "labels": {
+      "package": "teku-lukso.dnp.dappnode.eth",
+      "service": "beacon-chain.teku-lukso.dappnode"
+    },
+    "targets": ["beacon-chain.teku-lukso.dappnode:8008"]
+  },
+  {
+    "labels": {
+      "package": "teku-lukso.dnp.dappnode.eth",
+      "service": "validator.teku-lukso.dappnode"
+    },
+    "targets": ["validator.teku-lukso.dappnode:8008"]
+  }
+]

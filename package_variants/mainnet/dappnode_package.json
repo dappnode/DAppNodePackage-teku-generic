@@ -1,0 +1,20 @@
+{
+  "name": "teku.dnp.dappnode.eth",
+  "version": "2.0.13",
+  "links": {
+    "ui": "http://brain.web3signer.dappnode",
+    "homepage": "https://docs.teku.consensys.net",
+    "readme": "https://github.com/ConsenSys/teku/blob/master/README.md",
+    "docs": "https://docs.teku.consensys.net"
+  },
+  "globalEnvs": [
+    {
+      "envs": ["EXECUTION_CLIENT_MAINNET", "MEVBOOST_MAINNET"],
+      "services": ["beacon-chain"]
+    },
+    {
+      "envs": ["MEVBOOST_MAINNET"],
+      "services": ["validator"]
+    }
+  ]
+}

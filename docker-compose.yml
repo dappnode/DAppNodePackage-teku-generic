@@ -1,0 +1,34 @@
+version: "3.5"
+services:
+  beacon-chain:
+    build:
+      context: beacon-chain
+      args:
+        UPSTREAM_VERSION: 24.6.1
+        STAKER_SCRIPTS_VERSION: v0.1.0
+    environment:
+      CHECKPOINT_SYNC_URL: ""
+      FEE_RECIPIENT: ""
+      EXTRA_OPTS: ""
+      JAVA_OPTS: "-Xmx6g"
+    volumes:
+      - "teku-holesky-data:/opt/teku/data"
+    restart: unless-stopped
+    # security_opt:
+    #   - "seccomp:unconfined"
+  validator:
+    build:
+      context: validator
+      args:
+        UPSTREAM_VERSION: 24.6.1
+    environment:
+      LOG_LEVEL: INFO
+      GRAFFITI: validating_from_DAppNode
+      EXTRA_OPTS: ""
+      FEE_RECIPIENT: ""
+      JAVA_OPTS: "-Xmx6g"
+    restart: unless-stopped
+    # security_opt:
+    #   - "seccomp:unconfined"
+volumes:
+  teku-holesky-data: {}

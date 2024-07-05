@@ -1,0 +1,14 @@
+version: "3.5"
+services:
+  beacon-chain:
+    build:
+      args:
+        NETWORK: gnosis
+        P2P_PORT: 19005
+    ports:
+      - "19005:19005/tcp"
+      - "19005:19005/udp"
+  validator:
+    build:
+      args:
+        NETWORK: gnosis

@@ -1,0 +1,14 @@
+version: "3.5"
+services:
+  beacon-chain:
+    build:
+      args:
+        NETWORK: holesky
+        P2P_PORT: 9605
+    ports:
+      - "9605:9605/tcp"
+      - "9605:9605/udp"
+  validator:
+    build:
+      args:
+        NETWORK: holesky

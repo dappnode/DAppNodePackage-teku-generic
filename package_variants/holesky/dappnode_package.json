@@ -1,0 +1,20 @@
+{
+  "name": "teku-holesky.dnp.dappnode.eth",
+  "version": "0.1.2",
+  "links": {
+    "ui": "http://brain.web3signer-holesky.dappnode",
+    "homepage": "https://docs.teku.consensys.net",
+    "readme": "https://github.com/ConsenSys/teku/blob/master/README.md",
+    "docs": "https://docs.teku.consensys.net"
+  },
+  "globalEnvs": [
+    {
+      "envs": ["EXECUTION_CLIENT_HOLESKY", "MEVBOOST_HOLESKY"],
+      "services": ["beacon-chain"]
+    },
+    {
+      "envs": ["MEVBOOST_HOLESKY"],
+      "services": ["validator"]
+    }
+  ]
+}

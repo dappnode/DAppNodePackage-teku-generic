@@ -1,0 +1,14 @@
+version: "3.5"
+services:
+  beacon-chain:
+    build:
+      args:
+        NETWORK: mainnet
+        P2P_PORT: 9105
+    ports:
+      - "9105:9105/tcp"
+      - "9105:9105/udp"
+  validator:
+    build:
+      args:
+        NETWORK: mainnet
