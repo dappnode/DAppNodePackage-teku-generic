@@ -6,21 +6,24 @@ services:
       args:
         UPSTREAM_VERSION: 24.6.1
         STAKER_SCRIPTS_VERSION: v0.1.0
+        DATA_DIR: /opt/teku/data
     environment:
       CHECKPOINT_SYNC_URL: ""
       FEE_RECIPIENT: ""
       EXTRA_OPTS: ""
       JAVA_OPTS: "-Xmx6g"
     volumes:
-      - "teku-holesky-data:/opt/teku/data"
+      - "teku-data:/opt/teku/data"
     restart: unless-stopped
-    # security_opt:
-    #   - "seccomp:unconfined"
+    security_opt:
+      - "seccomp:unconfined"
   validator:
     build:
       context: validator
       args:
         UPSTREAM_VERSION: 24.6.1
+        STAKER_SCRIPTS_VERSION: v0.1.0
+        DATA_DIR: /opt/teku/data
     environment:
       LOG_LEVEL: INFO
       GRAFFITI: validating_from_DAppNode
@@ -28,7 +31,7 @@ services:
       FEE_RECIPIENT: ""
       JAVA_OPTS: "-Xmx6g"
     restart: unless-stopped
-    # security_opt:
-    #   - "seccomp:unconfined"
+    security_opt:
+      - "seccomp:unconfined"
 volumes:
-  teku-holesky-data: {}
+  teku-data: {}
