@@ -4,7 +4,7 @@ services:
     build:
       context: beacon-chain
       args:
-        UPSTREAM_VERSION: 24.6.1
+        UPSTREAM_VERSION: 24.8.0
         STAKER_SCRIPTS_VERSION: v0.1.0
         DATA_DIR: /opt/teku/data
     environment:
@@ -13,15 +13,15 @@ services:
       EXTRA_OPTS: ""
       JAVA_OPTS: "-Xmx6g"
     volumes:
-      - "teku-data:/opt/teku/data"
+      - teku-data:/opt/teku/data
     restart: unless-stopped
     security_opt:
-      - "seccomp:unconfined"
+      - seccomp:unconfined
   validator:
     build:
       context: validator
       args:
-        UPSTREAM_VERSION: 24.6.1
+        UPSTREAM_VERSION: 24.8.0
         STAKER_SCRIPTS_VERSION: v0.1.0
         DATA_DIR: /opt/teku/data
     environment:
@@ -32,6 +32,6 @@ services:
       JAVA_OPTS: "-Xmx6g"
     restart: unless-stopped
     security_opt:
-      - "seccomp:unconfined"
+      - seccomp:unconfined
 volumes:
   teku-data: {}
