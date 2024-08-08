@@ -22,7 +22,7 @@ exec /opt/teku/bin/teku \
     --network="${NETWORK}" \
     --data-base-path="${DATA_DIR}" \
     --ee-endpoint="${ENGINE_URL}" \
-    --ee-jwt-secret-file="${JWT_SECRET_FILE}" \
+    --ee-jwt-secret-file="${JWT_FILE_PATH}" \
     --p2p-port="${P2P_PORT}" \
     --rest-api-cors-origins="*" \
     --rest-api-interface=0.0.0.0 \
