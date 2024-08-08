@@ -1,6 +1,5 @@
 #!/bin/sh
 
-SUPPORTED_NETWORKS="gnosis holesky mainnet lukso"
 CHECKPOINT_SYNC_FLAG="--initial-state"
 MEVBOOST_FLAG_KEYS="--builder-endpoint"
 TEKU_FORMAT_CHECKPOINT_URL="$(echo "${CHECKPOINT_SYNC_URL}" | sed 's:/*$::')/eth/v2/debug/beacon/states/finalized"
@@ -8,10 +7,13 @@ TEKU_FORMAT_CHECKPOINT_URL="$(echo "${CHECKPOINT_SYNC_URL}" | sed 's:/*$::')/eth
 # shellcheck disable=SC1091 # Path is relative to the Dockerfile
 . /etc/profile
 
-ENGINE_URL=$(get_engine_api_url "${NETWORK}" "${SUPPORTED_NETWORKS}")
+ENGINE_URL="http://execution.${NETWORK}.staker.dappnode:8551"
 VALID_FEE_RECIPIENT=$(get_valid_fee_recipient "${FEE_RECIPIENT}")
 CHECKPOINT_SYNC_FLAG=$(get_checkpoint_sync_flag "${CHECKPOINT_SYNC_FLAG}" "${TEKU_FORMAT_CHECKPOINT_URL}")
 MEVBOOST_FLAG=$(get_mevboost_flag "${NETWORK}" "${MEVBOOST_FLAG_KEYS}")
+
+JWT_SECRET=$(get_jwt_secret_by_network "${NETWORK}")
+echo "${JWT_SECRET}" >"${JWT_FILE_PATH}"
 
 echo "[INFO - entrypoint] Starting beacon node"
 

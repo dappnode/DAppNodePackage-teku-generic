@@ -6,11 +6,5 @@
     "homepage": "https://docs.teku.consensys.net",
     "readme": "https://github.com/ConsenSys/teku/blob/master/README.md",
     "docs": "https://docs.teku.consensys.net"
-  },
-  "globalEnvs": [
-    {
-      "envs": ["EXECUTION_CLIENT_LUKSO"],
-      "services": ["beacon-chain"]
-    }
-  ]
+  }
 }
