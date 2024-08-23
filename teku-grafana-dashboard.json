@@ -1,25 +1,26 @@
 {
   "__inputs": [
     {
-      "name": "Prometheus",
-      "label": "Prometheus",
       "description": "",
-      "type": "datasource",
+      "label": "Prometheus",
+      "name": "DS_PROMETHEUS",
       "pluginId": "prometheus",
-      "pluginName": "Prometheus"
+      "pluginName": "Prometheus",
+      "type": "datasource"
     }
   ],
+  "__elements": {},
   "__requires": [
     {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "6.7.4"
+      "version": "9.3.1"
     },
     {
       "type": "panel",
       "id": "graph",
-      "name": "Graph",
+      "name": "Graph (old)",
       "version": ""
     },
     {
@@ -27,12 +28,6 @@
       "id": "prometheus",
       "name": "Prometheus",
       "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "singlestat",
-      "name": "Singlestat",
-      "version": ""
     },
     {
       "type": "panel",
@@ -46,23 +41,32 @@
       {
         "$$hashKey": "object:56",
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "limit": 100,
         "name": "Annotations & Alerts",
         "showIn": 0,
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
   },
-  "description": "Dashboard to monitor multiple Teku services on the same beacon chain",
+  "description": "Dashboard to monitor multiple Teku instances on the same beacon chain",
   "editable": true,
+  "fiscalYearStartMonth": 0,
   "gnetId": 13457,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1626838102804,
   "links": [
     {
       "asDropdown": false,
@@ -101,20 +105,49 @@
       "url": "https://github.com/ConsenSys/teku"
     }
   ],
+  "liveNow": false,
   "panels": [
     {
-      "cacheTimeout": null,
-      "colorBackground": true,
-      "colorValue": false,
-      "colors": ["#5794F2", "#5794F2", "#5794F2"],
-      "datasource": null,
-      "format": "none",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#5794F2",
+                "value": null
+              },
+              {
+                "color": "#5794F2",
+                "value": 0
+              },
+              {
+                "color": "#5794F2",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 1,
@@ -123,71 +156,44 @@
         "y": 0
       },
       "id": 57,
-      "interval": null,
       "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "$$hashKey": "object:337",
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "$$hashKey": "object:338",
-          "name": "range to text",
-          "value": 2
-        }
-      ],
       "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "pluginVersion": "6.7.4",
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false,
-        "ymax": null,
-        "ymin": null
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
       },
-      "tableColumn": "",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "1",
           "interval": "",
           "legendFormat": "VALIDATOR",
           "refId": "A"
         }
       ],
-      "thresholds": "0,1,2",
-      "timeFrom": null,
-      "timeShift": null,
       "title": "VALIDATOR",
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "$$hashKey": "object:340",
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "avg"
+      "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Number of local validators",
       "fieldConfig": {
         "defaults": {
@@ -214,62 +220,48 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 5,
+        "w": 4,
         "x": 0,
         "y": 1
       },
       "id": 36,
       "options": {
         "colorMode": "background",
-        "fieldOptions": {
-          "calcs": ["mean"],
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "yellow",
-                  "value": null
-                },
-                {
-                  "color": "green",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          "overrides": [],
-          "values": false
-        },
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["max"],
+          "calcs": [
+            "mean"
+          ],
           "fields": "",
-          "values": true
+          "values": false
         },
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
-          "expr": "sum(validator_local_validator_count{instance=\"validator.teku-holesky.dappnode:8008\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum(validator_local_validator_count{instance=~\"$system\"})",
           "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Local Validators",
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Number of blocks published",
       "fieldConfig": {
         "defaults": {
@@ -296,234 +288,55 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 5,
-        "x": 5,
+        "w": 4,
+        "x": 4,
         "y": 1
       },
       "id": 37,
       "options": {
         "colorMode": "background",
-        "fieldOptions": {
-          "calcs": ["mean"],
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "yellow",
-                  "value": null
-                },
-                {
-                  "color": "green",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          "overrides": [],
-          "values": false
-        },
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "mean"
+          ],
           "fields": "",
           "values": false
         },
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
-          "expr": "sum(validator_beacon_node_published_block_total{instance=\"validator.teku-holesky.dappnode:8008\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "expr": "sum(validator_beacon_node_requests_total{instance=~\"$system\",method=\"publish_block\",outcome=\"success\"})",
           "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Published Blocks",
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Number of attestations published",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 1
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 5,
-        "x": 10,
-        "y": 1
-      },
-      "id": 38,
-      "options": {
-        "colorMode": "background",
-        "fieldOptions": {
-          "calcs": ["mean"],
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "yellow",
-                  "value": null
-                },
-                {
-                  "color": "green",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          "overrides": [],
-          "values": false
-        },
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value"
-      },
-      "pluginVersion": "6.7.4",
-      "targets": [
-        {
-          "expr": "sum(validator_beacon_node_published_attestation_total{instance=\"validator.teku-holesky.dappnode:8008\"})",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Published Attestations",
-      "type": "stat"
-    },
-    {
-      "datasource": null,
-      "description": "Number of aggregates published",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 1
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 5,
-        "x": 15,
-        "y": 1
-      },
-      "id": 39,
-      "options": {
-        "colorMode": "background",
-        "fieldOptions": {
-          "calcs": ["mean"],
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "yellow",
-                  "value": null
-                },
-                {
-                  "color": "green",
-                  "value": 1
-                }
-              ]
-            }
-          },
-          "overrides": [],
-          "values": false
-        },
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value"
-      },
-      "pluginVersion": "6.7.4",
-      "targets": [
-        {
-          "expr": "sum(validator_beacon_node_published_aggregate_total{instance=\"validator.teku-holesky.dappnode:8008\"})",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Published Aggregates",
-      "type": "stat"
-    },
-    {
-      "datasource": null,
-      "description": "Total number of active validators in the network.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "displayName": "",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -545,52 +358,244 @@
       "gridPos": {
         "h": 3,
         "w": 4,
-        "x": 20,
+        "x": 8,
         "y": 1
       },
-      "id": 44,
+      "id": 38,
       "options": {
         "colorMode": "background",
-        "fieldOptions": {
-          "calcs": ["mean"],
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            }
-          },
-          "overrides": [],
-          "values": false
-        },
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "mean"
+          ],
           "fields": "",
           "values": false
         },
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
-          "expr": "max(beacon_current_active_validators{instance=\"beacon-chain.teku-holesky.dappnode:8008\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "expr": "sum(validator_beacon_node_requests_total{instance=~\"$system\",method=\"publish_attestation\",outcome=\"success\"})",
           "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
+      "title": "Published Attestations",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "description": "Number of aggregates published",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 12,
+        "y": 1
+      },
+      "id": 39,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "expr": "sum(validator_beacon_node_requests_total{instance=~\"$system\",method=\"publish_aggregate_and_proofs\",outcome=\"success\"})",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Published Aggregates",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "description": "Number of sync committee messages published",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 16,
+        "y": 1
+      },
+      "id": 67,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "expr": "sum(validator_beacon_node_requests_total{instance=~\"$system\",method=\"send_sync_committee_messages\",outcome=\"success\"})",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Published Sync Committee Messages",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "description": "Total number of active validators in the network.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "displayName": "",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
+      "id": 44,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "max(beacon_current_active_validators{instance=~\"$system\"})",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
       "title": "Total Validators",
       "type": "stat"
     },
@@ -599,7 +604,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Percentage of attestations in each epoch with the correct head root, correct target root and that were successfully included in blocks.",
       "fieldConfig": {
         "defaults": {
@@ -631,11 +639,10 @@
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
-        "alertThreshold": true,
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "9.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -645,59 +652,85 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "validator_performance_included_attestations{instance=\"validator.teku-holesky.dappnode:8008\"} / validator_performance_expected_attestations{instance=\"validator.teku-holesky.dappnode:8008\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "validator_performance_included_attestations{instance=~\"$system\"} / validator_performance_expected_attestations{instance=~\"$system\"}",
           "interval": "",
-          "legendFormat": "{{service}} Included",
+          "legendFormat": "{{instance}} Included",
           "refId": "C"
         },
         {
-          "expr": "validator_performance_correct_head_block_count{instance=\"validator.teku-holesky.dappnode:8008\"} / validator_performance_included_attestations{instance=\"validator.teku-holesky.dappnode:8008\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "validator_performance_correct_head_block_count{instance=~\"$system\"} / validator_performance_included_attestations{instance=~\"$system\"}",
           "interval": "",
-          "legendFormat": "{{service}} Correct Head",
+          "legendFormat": "{{instance}} Correct Head",
           "refId": "A"
         },
         {
-          "expr": "validator_performance_correct_target_count{instance=\"validator.teku-holesky.dappnode:8008\"} / validator_performance_included_attestations{instance=\"validator.teku-holesky.dappnode:8008\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "validator_performance_correct_target_count{instance=~\"$system\"} / validator_performance_included_attestations{instance=~\"$system\"}",
           "interval": "",
-          "legendFormat": "{{service}} Correct Target",
+          "legendFormat": "{{instance}} Correct Target",
           "refId": "B"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
-          "expr": "\n(\nvalidator_performance_correct_head_block_count{instance=\"validator.teku-holesky.dappnode:8008\"} - (validator_performance_expected_attestations{instance=\"validator.teku-holesky.dappnode:8008\"} - validator_performance_correct_head_block_count{instance=\"validator.teku-holesky.dappnode:8008\"}) +\nvalidator_performance_correct_target_count{instance=\"validator.teku-holesky.dappnode:8008\"} - (validator_performance_expected_attestations{instance=\"validator.teku-holesky.dappnode:8008\"} - validator_performance_correct_target_count{instance=\"validator.teku-holesky.dappnode:8008\"}) +\nvalidator_performance_included_attestations{instance=\"validator.teku-holesky.dappnode:8008\"} - (validator_performance_expected_attestations{instance=\"validator.teku-holesky.dappnode:8008\"} - validator_performance_included_attestations{instance=\"validator.teku-holesky.dappnode:8008\"}) +\n(0.875  * validator_performance_included_attestations{instance=\"validator.teku-holesky.dappnode:8008\"} / validator_performance_inclusion_distance_average{instance=\"validator.teku-holesky.dappnode:8008\"})\n) / validator_performance_expected_attestations{instance=\"validator.teku-holesky.dappnode:8008\"} / 3.875",
+          "expr": "\n(\nvalidator_performance_correct_head_block_count{instance=~\"$system\"} - (validator_performance_expected_attestations{instance=~\"$system\"} - validator_performance_correct_head_block_count{instance=~\"$system\"}) +\nvalidator_performance_correct_target_count{instance=~\"$system\"} - (validator_performance_expected_attestations{instance=~\"$system\"} - validator_performance_correct_target_count{instance=~\"$system\"}) +\nvalidator_performance_included_attestations{instance=~\"$system\"} - (validator_performance_expected_attestations{instance=~\"$system\"} - validator_performance_included_attestations{instance=~\"$system\"}) +\n(0.875  * validator_performance_included_attestations{instance=~\"$system\"} / validator_performance_inclusion_distance_average{instance=~\"$system\"})\n) / validator_performance_expected_attestations{instance=~\"$system\"} / 3.875",
           "interval": "",
-          "legendFormat": "{{service}} Attestation Rewards Earned",
+          "legendFormat": "{{instance}} Attestation Rewards Earned",
           "refId": "D"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
-          "expr": "validator_performance_included_sync_committee_messages{instance=\"validator.teku-holesky.dappnode:8008\"} / validator_performance_expected_sync_committee_messages{instance=\"validator.teku-holesky.dappnode:8008\"}",
+          "expr": "validator_performance_included_sync_committee_messages{instance=~\"$system\"} / validator_performance_expected_sync_committee_messages{instance=~\"$system\"}",
           "hide": false,
           "interval": "",
-          "legendFormat": "{{service}} Included Signatures",
+          "legendFormat": "{{instance}} Included Signatures",
           "refId": "E"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
-          "expr": "validator_performance_produced_sync_committee_messages{instance=\"validator.teku-holesky.dappnode:8008\"} / validator_performance_expected_sync_committee_messages{instance=\"validator.teku-holesky.dappnode:8008\"}",
+          "expr": "validator_performance_produced_sync_committee_messages{instance=~\"$system\"} / validator_performance_expected_sync_committee_messages{instance=~\"$system\"}",
           "hide": false,
           "interval": "",
-          "legendFormat": "{{service}} Produced Signatures",
+          "legendFormat": "{{instance}} Produced Signatures",
           "refId": "F"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
-          "expr": "validator_performance_correct_sync_committee_messages{instance=\"validator.teku-holesky.dappnode:8008\"} / validator_performance_produced_sync_committee_messages{instance=\"validator.teku-holesky.dappnode:8008\"}",
+          "expr": "validator_performance_correct_sync_committee_messages{instance=~\"$system\"} / validator_performance_produced_sync_committee_messages{instance=~\"$system\"}",
           "hide": false,
           "interval": "",
-          "legendFormat": "{{service}} Correct Signatures",
+          "legendFormat": "{{instance}} Correct Signatures",
           "refId": "G"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Attestation Performance",
       "tooltip": {
         "shared": true,
@@ -706,9 +739,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -716,7 +747,6 @@
         {
           "$$hashKey": "object:149",
           "format": "percentunit",
-          "label": null,
           "logBase": 1,
           "max": "1",
           "min": "0",
@@ -725,16 +755,12 @@
         {
           "$$hashKey": "object:150",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -742,8 +768,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
-      "decimals": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Number of slots between when an attestation is created to when it is included in a block. The minimum possible inclusion distance is 1.",
       "fieldConfig": {
         "defaults": {
@@ -776,11 +804,10 @@
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
-        "alertThreshold": true,
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "9.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -790,28 +817,38 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "validator_performance_inclusion_distance_min{instance=\"validator.teku-holesky.dappnode:8008\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "validator_performance_inclusion_distance_min{instance=~\"$system\"}",
           "interval": "",
-          "legendFormat": "{{service}} Minimum",
+          "legendFormat": "{{instance}} Minimum",
           "refId": "A"
         },
         {
-          "expr": "validator_performance_inclusion_distance_average{instance=\"validator.teku-holesky.dappnode:8008\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "validator_performance_inclusion_distance_average{instance=~\"$system\"}",
           "interval": "",
-          "legendFormat": "{{service}} Average",
+          "legendFormat": "{{instance}} Average",
           "refId": "B"
         },
         {
-          "expr": "validator_performance_inclusion_distance_max{instance=\"validator.teku-holesky.dappnode:8008\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "validator_performance_inclusion_distance_max{instance=~\"$system\"}",
           "interval": "",
-          "legendFormat": "{{service}} Maximum",
+          "legendFormat": "{{instance}} Maximum",
           "refId": "C"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Attestation Inclusion Distance (slots)",
       "tooltip": {
         "shared": true,
@@ -820,36 +857,27 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
       "yaxes": [
         {
           "$$hashKey": "object:149",
-          "decimals": null,
           "format": "none",
-          "label": null,
           "logBase": 1,
-          "max": null,
           "min": "1",
           "show": true
         },
         {
           "$$hashKey": "object:150",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": false
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -857,7 +885,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Percentage of blocks produced in each epoch that were successfully included in the canonical chain.",
       "fieldConfig": {
         "defaults": {
@@ -890,11 +921,10 @@
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
-        "alertThreshold": true,
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "9.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -904,16 +934,18 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "validator_performance_included_blocks{instance=\"validator.teku-holesky.dappnode:8008\"} / validator_performance_expected_blocks{instance=\"validator.teku-holesky.dappnode:8008\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "validator_performance_included_blocks{instance=~\"$system\"} / validator_performance_expected_blocks{instance=~\"$system\"}",
           "interval": "",
-          "legendFormat": "{{service}} Included Blocks",
+          "legendFormat": "{{instance}} Included Blocks",
           "refId": "A"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Included Blocks",
       "tooltip": {
         "shared": true,
@@ -922,9 +954,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -932,7 +962,6 @@
         {
           "$$hashKey": "object:149",
           "format": "percentunit",
-          "label": null,
           "logBase": 1,
           "max": "1",
           "min": "0",
@@ -941,31 +970,55 @@
         {
           "$$hashKey": "object:150",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
-      "cacheTimeout": null,
-      "colorBackground": true,
-      "colorValue": false,
-      "colors": ["#5794F2", "#5794F2", "#5794F2"],
-      "datasource": null,
-      "format": "none",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#5794F2",
+                "value": null
+              },
+              {
+                "color": "#5794F2",
+                "value": 0
+              },
+              {
+                "color": "#5794F2",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 1,
@@ -974,71 +1027,44 @@
         "y": 14
       },
       "id": 58,
-      "interval": null,
       "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "$$hashKey": "object:241",
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "$$hashKey": "object:242",
-          "name": "range to text",
-          "value": 2
-        }
-      ],
       "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "pluginVersion": "6.7.4",
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false,
-        "ymax": null,
-        "ymin": null
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
       },
-      "tableColumn": "",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "1",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "thresholds": "0,1,2",
-      "timeFrom": null,
-      "timeShift": null,
       "title": "BEACON CHAIN",
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "$$hashKey": "object:244",
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "avg"
+      "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Current slot according to system time",
       "fieldConfig": {
         "defaults": {
@@ -1050,12 +1076,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
-                "value": null
-              },
-              {
                 "color": "green",
-                "value": 1
+                "value": null
               }
             ]
           },
@@ -1072,51 +1094,41 @@
       "id": 45,
       "options": {
         "colorMode": "background",
-        "fieldOptions": {
-          "calcs": ["mean"],
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            }
-          },
-          "overrides": [],
-          "values": false
-        },
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "mean"
+          ],
           "fields": "",
           "values": false
         },
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
-          "expr": "max(beacon_slot{instance=\"beacon-chain.teku-holesky.dappnode:8008\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "max(beacon_slot{instance=~\"$system\"})",
           "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Current slot",
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Slot of the latest imported block",
       "fieldConfig": {
         "defaults": {
@@ -1128,12 +1140,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
-                "value": null
-              },
-              {
                 "color": "green",
-                "value": 1
+                "value": null
               }
             ]
           },
@@ -1150,51 +1158,41 @@
       "id": 48,
       "options": {
         "colorMode": "background",
-        "fieldOptions": {
-          "calcs": ["mean"],
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            }
-          },
-          "overrides": [],
-          "values": false
-        },
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "mean"
+          ],
           "fields": "",
           "values": false
         },
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
-          "expr": "max(beacon_head_slot{instance=\"beacon-chain.teku-holesky.dappnode:8008\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "max(beacon_head_slot{instance=~\"$system\"})",
           "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Head slot",
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Current justified epoch",
       "fieldConfig": {
         "defaults": {
@@ -1206,12 +1204,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
-                "value": null
-              },
-              {
                 "color": "green",
-                "value": 2
+                "value": null
               }
             ]
           },
@@ -1228,51 +1222,41 @@
       "id": 49,
       "options": {
         "colorMode": "background",
-        "fieldOptions": {
-          "calcs": ["mean"],
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            }
-          },
-          "overrides": [],
-          "values": false
-        },
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "mean"
+          ],
           "fields": "",
           "values": false
         },
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
-          "expr": "max(beacon_current_justified_epoch{instance=\"beacon-chain.teku-holesky.dappnode:8008\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "max(beacon_current_justified_epoch{instance=~\"$system\"})",
           "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Justified Epoch",
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Current finalized epoch",
       "fieldConfig": {
         "defaults": {
@@ -1284,12 +1268,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
-                "value": null
-              },
-              {
                 "color": "green",
-                "value": 2
+                "value": null
               }
             ]
           },
@@ -1306,74 +1286,54 @@
       "id": 51,
       "options": {
         "colorMode": "background",
-        "fieldOptions": {
-          "calcs": ["mean"],
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            }
-          },
-          "overrides": [],
-          "values": false
-        },
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "mean"
+          ],
           "fields": "",
           "values": false
         },
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
-          "expr": "max(beacon_finalized_epoch{instance=\"beacon-chain.teku-holesky.dappnode:8008\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "max(beacon_finalized_epoch{instance=~\"$system\"})",
           "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Finalized Epoch",
       "type": "stat"
     },
     {
-      "cacheTimeout": null,
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Total number of peers connected to the selected nodes.",
       "fieldConfig": {
         "defaults": {
-          "mappings": [
-            {
-              "$$hashKey": "object:313",
-              "id": 0,
-              "op": "=",
-              "text": "N/A",
-              "type": 1,
-              "value": "null"
-            }
-          ],
+          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "#F2495C",
+                "color": "red",
                 "value": null
               },
               {
-                "color": "yellow",
+                "color": "#EAB839",
                 "value": 25
               },
               {
@@ -1396,58 +1356,41 @@
       "links": [],
       "options": {
         "colorMode": "background",
-        "fieldOptions": {
-          "calcs": ["mean"],
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "#EAB839",
-                  "value": 25
-                },
-                {
-                  "color": "green",
-                  "value": 60
-                }
-              ]
-            }
-          },
-          "overrides": [],
-          "values": false
-        },
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
-          "expr": "sum(beacon_peer_count{instance=\"beacon-chain.teku-holesky.dappnode:8008\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "exemplar": true,
+          "expr": "sum(beacon_peer_count{instance=~\"$system\"})",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Peer Count",
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "The current epoch according to system time",
       "fieldConfig": {
         "defaults": {
@@ -1459,12 +1402,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
-                "value": null
-              },
-              {
                 "color": "green",
-                "value": 1
+                "value": null
               }
             ]
           },
@@ -1481,51 +1420,41 @@
       "id": 46,
       "options": {
         "colorMode": "background",
-        "fieldOptions": {
-          "calcs": ["mean"],
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            }
-          },
-          "overrides": [],
-          "values": false
-        },
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "mean"
+          ],
           "fields": "",
           "values": false
         },
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
-          "expr": "max(beacon_epoch{instance=\"beacon-chain.teku-holesky.dappnode:8008\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "max(beacon_epoch{instance=~\"$system\"})",
           "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Current Epoch",
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Number of slots the head block is behind.",
       "fieldConfig": {
         "defaults": {
@@ -1563,59 +1492,41 @@
       "id": 47,
       "options": {
         "colorMode": "background",
-        "fieldOptions": {
-          "calcs": ["mean"],
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "yellow",
-                  "value": 3
-                },
-                {
-                  "color": "red",
-                  "value": 5
-                }
-              ]
-            }
-          },
-          "overrides": [],
-          "values": false
-        },
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "mean"
+          ],
           "fields": "",
           "values": false
         },
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
-          "expr": "min(beacon_slot{instance=\"beacon-chain.teku-holesky.dappnode:8008\"} - beacon_head_slot{instance=\"beacon-chain.teku-holesky.dappnode:8008\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "min(beacon_slot{instance=~\"$system\"} - beacon_head_slot{instance=~\"$system\"})",
           "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Slots Behind",
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Number of epochs that justification has been delayed.",
       "fieldConfig": {
         "defaults": {
@@ -1653,59 +1564,41 @@
       "id": 50,
       "options": {
         "colorMode": "background",
-        "fieldOptions": {
-          "calcs": ["mean"],
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "yellow",
-                  "value": 2
-                },
-                {
-                  "color": "red",
-                  "value": 5
-                }
-              ]
-            }
-          },
-          "overrides": [],
-          "values": false
-        },
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "mean"
+          ],
           "fields": "",
           "values": false
         },
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
-          "expr": "clamp_min(min(beacon_epoch{instance=\"beacon-chain.teku-holesky.dappnode:8008\"} - beacon_current_justified_epoch{instance=\"beacon-chain.teku-holesky.dappnode:8008\"} - 1), 0)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "clamp_min(min(beacon_epoch{instance=~\"$system\"} - beacon_current_justified_epoch{instance=~\"$system\"} - 1), 0)",
           "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Justification Delay (epochs)",
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Number of epochs that finalisation has been delayed.",
       "fieldConfig": {
         "defaults": {
@@ -1743,66 +1636,48 @@
       "id": 52,
       "options": {
         "colorMode": "background",
-        "fieldOptions": {
-          "calcs": ["mean"],
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "yellow",
-                  "value": 2
-                },
-                {
-                  "color": "red",
-                  "value": 5
-                }
-              ]
-            }
-          },
-          "overrides": [],
-          "values": false
-        },
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "mean"
+          ],
           "fields": "",
           "values": false
         },
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
-          "expr": "clamp_min(min(beacon_epoch{instance=\"beacon-chain.teku-holesky.dappnode:8008\"} - beacon_finalized_epoch{instance=\"beacon-chain.teku-holesky.dappnode:8008\"} - 2), 0)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "clamp_min(min(beacon_epoch{instance=~\"$system\"} - beacon_finalized_epoch{instance=~\"$system\"} - 2), 0)",
           "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Finalisation Delay (epochs)",
       "type": "stat"
     },
     {
-      "cacheTimeout": null,
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Percentage of validators which voted for the correct target in the previous epoch.",
       "fieldConfig": {
         "defaults": {
+          "decimals": 1,
           "mappings": [
             {
-              "$$hashKey": "object:313",
+              "$$hashKey": "object:167",
               "id": 0,
               "op": "=",
               "text": "N/A",
@@ -1816,15 +1691,15 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#F2495C",
+                "color": "red",
                 "value": null
               },
               {
-                "color": "#FADE2A",
+                "color": "#EAB839",
                 "value": 0.67
               },
               {
-                "color": "#73BF69",
+                "color": "green",
                 "value": 0.9
               }
             ]
@@ -1843,66 +1718,32 @@
       "links": [],
       "options": {
         "colorMode": "background",
-        "fieldOptions": {
-          "calcs": ["lastNotNull"],
-          "defaults": {
-            "decimals": 1,
-            "mappings": [
-              {
-                "$$hashKey": "object:167",
-                "id": 0,
-                "op": "=",
-                "text": "N/A",
-                "type": 1,
-                "value": "null"
-              }
-            ],
-            "min": 0,
-            "nullValueMode": "connected",
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "#EAB839",
-                  "value": 0.67
-                },
-                {
-                  "color": "green",
-                  "value": 0.9
-                }
-              ]
-            },
-            "unit": "percentunit"
-          },
-          "overrides": [],
-          "values": false
-        },
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "6.7.4",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
-          "expr": "max(beacon_previous_correct_validators{instance=\"beacon-chain.teku-holesky.dappnode:8008\"} / beacon_previous_active_validators{instance=\"beacon-chain.teku-holesky.dappnode:8008\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "max(beacon_previous_correct_validators{instance=~\"$system\"} / beacon_previous_active_validators{instance=~\"$system\"})",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Correct Attestation Rate",
       "type": "stat"
     },
@@ -1911,8 +1752,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
-      "decimals": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Number of slots the head block is behind the current slot. Empty slots may mean the head block trails by a few slots.",
       "fieldConfig": {
         "defaults": {
@@ -1948,11 +1791,10 @@
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
-        "alertThreshold": true,
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "9.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1968,28 +1810,38 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "beacon_slot{instance=\"beacon-chain.teku-holesky.dappnode:8008\"} - beacon_head_slot{instance=\"beacon-chain.teku-holesky.dappnode:8008\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "beacon_slot{instance=~\"$system\"} - beacon_head_slot{instance=~\"$system\"}",
           "interval": "",
-          "legendFormat": "{{service}} Head Slot",
+          "legendFormat": "{{instance}} Head Slot",
           "refId": "A"
         },
         {
-          "expr": "clamp_min(min(beacon_epoch{instance=\"beacon-chain.teku-holesky.dappnode:8008\"} - beacon_current_justified_epoch{instance=\"beacon-chain.teku-holesky.dappnode:8008\"} - 1) without (service), 0)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "clamp_min(min(beacon_epoch{instance=~\"$system\"} - beacon_current_justified_epoch{instance=~\"$system\"} - 1) without (instance), 0)",
           "interval": "",
           "legendFormat": "Justification Delay",
           "refId": "B"
         },
         {
-          "expr": "clamp_min(min(beacon_epoch{instance=\"beacon-chain.teku-holesky.dappnode:8008\"} - beacon_finalized_epoch{instance=\"beacon-chain.teku-holesky.dappnode:8008\"} - 2) without (service), 0)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "clamp_min(min(beacon_epoch{instance=~\"$system\"} - beacon_finalized_epoch{instance=~\"$system\"} - 2) without (instance), 0)",
           "interval": "",
           "legendFormat": "Finalisation Delay",
           "refId": "C"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Trailing Distance",
       "tooltip": {
         "shared": true,
@@ -1998,21 +1850,15 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
       "yaxes": [
         {
           "$$hashKey": "object:149",
-          "decimals": null,
           "format": "none",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
@@ -2021,14 +1867,11 @@
           "format": "ops",
           "label": "blocks/second",
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -2036,8 +1879,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
-      "decimals": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Overall participation rate in the chain. The Correct Validators must be above 2/3rd for the chain to finalize.",
       "fieldConfig": {
         "defaults": {
@@ -2070,11 +1915,10 @@
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
-        "alertThreshold": true,
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "9.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2084,21 +1928,33 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(beacon_previous_live_validators{instance=\"beacon-chain.teku-holesky.dappnode:8008\"} / beacon_previous_active_validators{instance=\"beacon-chain.teku-holesky.dappnode:8008\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "max(beacon_previous_live_validators{instance=~\"$system\"} / beacon_previous_active_validators{instance=~\"$system\"})",
           "interval": "",
           "legendFormat": "Live Validators",
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
-          "expr": "max(beacon_previous_correct_validators{instance=\"beacon-chain.teku-holesky.dappnode:8008\"} / beacon_previous_active_validators{instance=\"beacon-chain.teku-holesky.dappnode:8008\"})",
+          "expr": "max(beacon_previous_correct_validators{instance=~\"$system\"} / beacon_previous_active_validators{instance=~\"$system\"})",
           "interval": "",
           "legendFormat": "Correct Validators",
           "refId": "B"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
-          "expr": "max(beacon_previous_live_sync_committee{instance=\"beacon-chain.teku-holesky.dappnode:8008\"} / (512 * 32))",
+          "expr": "max(beacon_previous_live_sync_committee{instance=~\"$system\"} / (512 * 32))",
           "hide": false,
           "interval": "",
           "legendFormat": "Sync Committee Participation",
@@ -2116,9 +1972,7 @@
           "yaxis": "left"
         }
       ],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Participation Rate",
       "tooltip": {
         "shared": true,
@@ -2127,18 +1981,14 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
       "yaxes": [
         {
           "$$hashKey": "object:149",
-          "decimals": null,
           "format": "percentunit",
-          "label": null,
           "logBase": 1,
           "max": "1",
           "min": "0",
@@ -2147,16 +1997,12 @@
         {
           "$$hashKey": "object:150",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": false
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -2164,8 +2010,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
-      "decimals": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "Rate of gossip messages received per second.",
       "fieldConfig": {
         "defaults": {
@@ -2200,11 +2048,10 @@
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
-        "alertThreshold": true,
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "9.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2214,16 +2061,18 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(libp2p_gossip_messages_total{instance=\"beacon-chain.teku-holesky.dappnode:8008\"}[1m])",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "irate(libp2p_gossip_messages_total{instance=~\"$system\"}[1m])",
           "interval": "",
-          "legendFormat": "{{service}} {{topic}}",
+          "legendFormat": "{{instance}} {{topic}}",
           "refId": "A"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Gossip Messages",
       "tooltip": {
         "shared": true,
@@ -2232,51 +2081,69 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
       "yaxes": [
         {
           "$$hashKey": "object:149",
-          "decimals": null,
           "format": "ops",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:150",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": false
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
-      "cacheTimeout": null,
-      "colorBackground": true,
-      "colorValue": false,
-      "colors": ["#5794F2", "#5794F2", "#5794F2"],
-      "datasource": null,
-      "format": "none",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#5794F2",
+                "value": null
+              },
+              {
+                "color": "#5794F2",
+                "value": 0
+              },
+              {
+                "color": "#5794F2",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 1,
@@ -2285,75 +2152,48 @@
         "y": 31
       },
       "id": 62,
-      "interval": null,
       "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "$$hashKey": "object:279",
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "$$hashKey": "object:280",
-          "name": "range to text",
-          "value": 2
-        }
-      ],
       "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "pluginVersion": "6.7.4",
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false,
-        "ymax": null,
-        "ymin": null
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
       },
-      "tableColumn": "",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "1",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "thresholds": "0,1,2",
-      "timeFrom": null,
-      "timeShift": null,
       "title": "SYSTEM",
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "$$hashKey": "object:282",
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "avg"
+      "type": "stat"
     },
     {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -2385,11 +2225,10 @@
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
-        "alertThreshold": true,
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "9.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2399,17 +2238,31 @@
       "steppedLine": false,
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
-          "expr": "irate(process_cpu_seconds_total{instance=\"beacon-chain.teku-holesky.dappnode:8008\"}[1m])",
+          "expr": "irate(process_cpu_seconds_total{instance=~\"$system\"}[1m])",
           "interval": "",
-          "legendFormat": "{{service}} {{job}}",
+          "legendFormat": "{{instance}} {{job}}",
           "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "exemplar": true,
+          "expr": "avg without (instance) (irate(process_cpu_seconds_total{instance=~\"$system\"}[1m]))",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Average {{job}}",
+          "refId": "A"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "CPU usage",
       "tooltip": {
         "shared": true,
@@ -2418,9 +2271,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -2428,25 +2279,19 @@
         {
           "$$hashKey": "object:149",
           "format": "none",
-          "label": null,
           "logBase": 1,
-          "max": null,
           "min": "0",
           "show": true
         },
         {
           "$$hashKey": "object:150",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -2454,7 +2299,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -2490,11 +2338,10 @@
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
-        "alertThreshold": true,
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "9.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2504,40 +2351,58 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "jvm_memory_pool_bytes_used{instance=\"beacon-chain.teku-holesky.dappnode:8008\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "jvm_memory_pool_bytes_used{instance=~\"$system\"}",
           "interval": "",
-          "legendFormat": "{{service}} {{job}} {{pool}} Used",
+          "legendFormat": "{{instance}} {{job}} {{pool}} Used",
           "refId": "C"
         },
         {
-          "expr": "sum by (service) (jvm_memory_pool_bytes_used{instance=\"beacon-chain.teku-holesky.dappnode:8008\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum by (instance) (jvm_memory_pool_bytes_used{instance=~\"$system\"})",
           "interval": "",
-          "legendFormat": "{{service}} {{job}} {{pool}} Used Total",
+          "legendFormat": "{{instance}} {{job}} {{pool}} Used Total",
           "refId": "A"
         },
         {
-          "expr": "process_resident_memory_bytes{instance=\"beacon-chain.teku-holesky.dappnode:8008\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "process_resident_memory_bytes{instance=~\"$system\"}",
           "interval": "",
-          "legendFormat": "{{service}} {{job}} {{pool}} Process Total",
+          "legendFormat": "{{instance}} {{job}} {{pool}} Process Total",
           "refId": "B"
         },
         {
-          "expr": " (jvm_memory_pool_bytes_max{instance=\"beacon-chain.teku-holesky.dappnode:8008\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": " (jvm_memory_pool_bytes_max{instance=~\"$system\"})",
           "interval": "",
-          "legendFormat": "{{service}} {{job}} {{pool}} Max",
+          "legendFormat": "{{instance}} {{job}} {{pool}} Max",
           "refId": "D"
         },
         {
-          "expr": "node_memory_MemTotal_bytes{instance=\"beacon-chain.teku-holesky.dappnode:8008\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "node_memory_MemTotal_bytes{instance=~\"$system\"}",
           "interval": "",
-          "legendFormat": "{{service}} System Memory",
+          "legendFormat": "{{instance}} System Memory",
           "refId": "E"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Memory Usage",
       "tooltip": {
         "shared": true,
@@ -2546,9 +2411,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -2556,25 +2419,19 @@
         {
           "$$hashKey": "object:149",
           "format": "bytes",
-          "label": null,
           "logBase": 1,
-          "max": null,
           "min": "0",
           "show": true
         },
         {
           "$$hashKey": "object:150",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -2582,7 +2439,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -2616,11 +2476,10 @@
       "linewidth": 1,
       "nullPointMode": "null",
       "options": {
-        "alertThreshold": true,
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "9.3.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2630,16 +2489,18 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(jvm_gc_collection_seconds_sum{instance=\"beacon-chain.teku-holesky.dappnode:8008\"}[1m])",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "rate(jvm_gc_collection_seconds_sum{instance=~\"$system\"}[1m])",
           "interval": "",
-          "legendFormat": "{{service}} {{gc}}",
+          "legendFormat": "{{instance}} {{gc}}",
           "refId": "C"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "GC Time",
       "tooltip": {
         "shared": true,
@@ -2648,9 +2509,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -2658,58 +2517,76 @@
         {
           "$$hashKey": "object:149",
           "format": "percentunit",
-          "label": null,
           "logBase": 1,
-          "max": null,
           "min": "0",
           "show": true
         },
         {
           "$$hashKey": "object:150",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 22,
+  "schemaVersion": 37,
   "style": "dark",
-  "tags": ["eth2.0", "ethereum", "teku"],
+  "tags": [
+    "eth2.0",
+    "ethereum",
+    "teku"
+  ],
   "templating": {
     "list": [
       {
-        "allValue": null,
         "current": {},
-        "datasource": null,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
         "definition": "beacon_slot",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": true,
-        "index": -1,
         "label": "System",
         "multi": true,
         "name": "system",
         "options": [],
-        "query": "beacon_slot",
+        "query": {
+          "query": "beacon_slot",
+          "refId": "Prometheus-system-Variable-Query"
+        },
         "refresh": 2,
         "regex": "/instance=\"([^\"]*)\"/",
         "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "default",
+          "value": "default"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "datasource",
+        "multi": false,
+        "name": "DS_PROMETHEUS",
+        "options": [],
+        "query": "prometheus",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
       }
     ]
   },
@@ -2732,10 +2609,8 @@
     ]
   },
   "timezone": "",
-  "title": "Teku Holesky",
-  "uid": "oTNZAomnp",
-  "variables": {
-    "list": []
-  },
-  "version": 2
+  "title": "Teku Dashboard",
+  "uid": "l8RXdVWnz",
+  "version": 8,
+  "weekStart": ""
 }
