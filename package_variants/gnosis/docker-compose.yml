@@ -8,7 +8,11 @@ services:
     ports:
       - "19005:19005/tcp"
       - "19005:19005/udp"
+    volumes:
+      - teku-gnosis-data:/opt/teku/data
   validator:
     build:
       args:
         NETWORK: gnosis
+volumes:
+  teku-gnosis-data: {}

@@ -8,7 +8,11 @@ services:
     ports:
       - "9905:9905/tcp"
       - "9905:9905/udp"
+    volumes:
+      - teku-lukso-data:/opt/teku/data
   validator:
     build:
       args:
         NETWORK: lukso
+volumes:
+  teku-lukso-data: {}
