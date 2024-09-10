@@ -12,8 +12,6 @@ services:
       FEE_RECIPIENT: ""
       EXTRA_OPTS: ""
       JAVA_OPTS: "-Xmx6g"
-    volumes:
-      - teku-data:/opt/teku/data
     restart: unless-stopped
     security_opt:
       - seccomp:unconfined
@@ -33,5 +31,3 @@ services:
     restart: unless-stopped
     security_opt:
       - seccomp:unconfined
-volumes:
-  teku-data: {}

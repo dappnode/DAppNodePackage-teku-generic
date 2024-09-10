@@ -8,7 +8,11 @@ services:
     ports:
       - "9605:9605/tcp"
       - "9605:9605/udp"
+    volumes:
+      - teku-holesky-data:/opt/teku/data
   validator:
     build:
       args:
         NETWORK: holesky
+volumes:
+  teku-holesky-data: {}
