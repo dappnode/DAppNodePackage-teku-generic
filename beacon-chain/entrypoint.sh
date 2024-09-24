@@ -15,24 +15,25 @@ MEVBOOST_FLAG=$(get_mevboost_flag "${NETWORK}" "${MEVBOOST_FLAG_KEYS}")
 JWT_SECRET=$(get_jwt_secret_by_network "${NETWORK}")
 echo "${JWT_SECRET}" >"${JWT_FILE_PATH}"
 
-echo "[INFO - entrypoint] Starting beacon node"
-
-# shellcheck disable=SC2086
-exec /opt/teku/bin/teku \
-    --network="${NETWORK}" \
-    --data-base-path="${DATA_DIR}" \
-    --ee-endpoint="${ENGINE_URL}" \
-    --ee-jwt-secret-file="${JWT_FILE_PATH}" \
-    --p2p-port="${P2P_PORT}" \
-    --rest-api-cors-origins="*" \
+FLAGS="--network=$NETWORK \
+    --data-base-path=$DATA_DIR \
+    --ee-endpoint=$ENGINE_URL \
+    --ee-jwt-secret-file=$JWT_FILE_PATH \
+    --p2p-port=$P2P_PORT \
+    --rest-api-cors-origins=* \
     --rest-api-interface=0.0.0.0 \
     --rest-api-port=3500 \
-    --rest-api-host-allowlist "*" \
+    --rest-api-host-allowlist=* \
     --rest-api-enabled=true \
     --rest-api-docs-enabled=true \
     --metrics-enabled=true \
-    --metrics-interface 0.0.0.0 \
-    --metrics-port 8008 \
-    --metrics-host-allowlist "*" \
+    --metrics-interface=0.0.0.0 \
+    --metrics-port=8008 \
+    --metrics-host-allowlist=* \
     --log-destination=CONSOLE \
-    --validators-proposer-default-fee-recipient="${VALID_FEE_RECIPIENT}" ${CHECKPOINT_SYNC_FLAG} ${MEVBOOST_FLAG} ${EXTRA_OPTS}
+    --validators-proposer-default-fee-recipient=$VALID_FEE_RECIPIENT $CHECKPOINT_SYNC_FLAG $MEVBOOST_FLAG $EXTRA_OPTS"
+
+echo "[INFO - entrypoint] Starting beacon with flags: $FLAGS"
+
+# shellcheck disable=SC2086
+exec /opt/teku/bin/teku $FLAGS
