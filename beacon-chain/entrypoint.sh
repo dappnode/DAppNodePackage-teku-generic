@@ -1,16 +1,19 @@
 #!/bin/sh
 
-CHECKPOINT_SYNC_FLAG="--initial-state"
+CHECKPOINT_SYNC_KEY="--initial-state"
 MEVBOOST_FLAG_KEYS="--builder-endpoint"
-TEKU_FORMAT_CHECKPOINT_URL="$(echo "${CHECKPOINT_SYNC_URL}" | sed 's:/*$::')/eth/v2/debug/beacon/states/finalized"
 
 # shellcheck disable=SC1091 # Path is relative to the Dockerfile
 . /etc/profile
 
 ENGINE_URL="http://execution.${NETWORK}.staker.dappnode:8551"
 VALID_FEE_RECIPIENT=$(get_valid_fee_recipient "${FEE_RECIPIENT}")
-CHECKPOINT_SYNC_FLAG=$(get_checkpoint_sync_flag "${CHECKPOINT_SYNC_FLAG}" "${TEKU_FORMAT_CHECKPOINT_URL}")
 MEVBOOST_FLAG=$(get_mevboost_flag "${NETWORK}" "${MEVBOOST_FLAG_KEYS}")
+
+if [ -n "${CHECKPOINT_SYNC_URL}" ]; then
+    TEKU_FORMAT_CHECKPOINT_URL="$(echo "${CHECKPOINT_SYNC_URL}" | sed 's:/*$::')/eth/v2/debug/beacon/states/finalized"
+    CHECKPOINT_SYNC_FLAG=$(get_checkpoint_sync_flag "${CHECKPOINT_SYNC_KEY}" "${TEKU_FORMAT_CHECKPOINT_URL}")
+fi
 
 JWT_SECRET=$(get_jwt_secret_by_network "${NETWORK}")
 echo "${JWT_SECRET}" >"${JWT_FILE_PATH}"
