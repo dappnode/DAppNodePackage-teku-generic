@@ -7,7 +7,7 @@ MEVBOOST_FLAG_KEYS="--builder-endpoint"
 . /etc/profile
 
 ENGINE_URL="http://execution.${NETWORK}.staker.dappnode:8551"
-VALID_FEE_RECIPIENT=$(get_valid_fee_recipient "${FEE_RECIPIENT}")
+VALID_FEE_RECIPIENT=$(get_valid_fee_recipient "${FEE_RECIPIENT_ADDRESS}")
 MEVBOOST_FLAG=$(get_mevboost_flag "${NETWORK}" "${MEVBOOST_FLAG_KEYS}")
 
 if [ -n "${CHECKPOINT_SYNC_URL}" ]; then
