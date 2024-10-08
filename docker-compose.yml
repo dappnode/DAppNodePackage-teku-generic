@@ -4,7 +4,7 @@ services:
     build:
       context: beacon-chain
       args:
-        UPSTREAM_VERSION: 24.8.0
+        UPSTREAM_VERSION: 24.10.0
         STAKER_SCRIPTS_VERSION: v0.1.0
         DATA_DIR: /opt/teku/data
     environment:
@@ -19,7 +19,7 @@ services:
     build:
       context: validator
       args:
-        UPSTREAM_VERSION: 24.8.0
+        UPSTREAM_VERSION: 24.10.0
         STAKER_SCRIPTS_VERSION: v0.1.0
         DATA_DIR: /opt/teku/data
     environment:
