@@ -7,7 +7,8 @@ ARG STAKER_SCRIPTS_VERSION
 
 USER root 
 
-ENV TLS_CERT_PATH=/tls/cert
+# Modify TLS_CERT_PATH to include the NETWORK arg value
+ENV TLS_CERT_PATH=/tls/cert/${NETWORK}
 
 ENV DATA_DIR=/opt/teku/data \
     NETWORK=${NETWORK} \
@@ -18,7 +19,7 @@ ENV DATA_DIR=/opt/teku/data \
     STAKER_SCRIPTS_URL=https://github.com/dappnode/staker-package-scripts/releases/download/${STAKER_SCRIPTS_VERSION}
 
 COPY /security/validator-api-bearer ${VALIDATOR_API_TOKEN_PATH}
-COPY /security/cert ${TLS_CERT_PATH}
+COPY /security/cert/${NETWORK} ${TLS_CERT_PATH}
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
 ADD ${STAKER_SCRIPTS_URL}/consensus_tools.sh /etc/profile.d/
@@ -31,3 +32,4 @@ RUN apt-get update && apt-get install ca-certificates --yes --no-install-recomme
 ENV NETWORK=${NETWORK}
 
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
+
