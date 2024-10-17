@@ -25,6 +25,7 @@ FLAGS="--log-destination=CONSOLE \
   --metrics-interface=0.0.0.0 \
   --metrics-port=8008 \
   --metrics-host-allowlist=* \
+  --doppelganger-detection-enabled=true \
   --validator-api-enabled=true \
   --validator-api-interface=0.0.0.0 \
   --validator-api-port=$VALIDATOR_PORT \
