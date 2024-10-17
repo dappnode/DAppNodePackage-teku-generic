@@ -23,6 +23,7 @@ FLAGS="--network=$NETWORK \
     --ee-endpoint=$ENGINE_URL \
     --ee-jwt-secret-file=$JWT_FILE_PATH \
     --p2p-port=$P2P_PORT \
+    --beacon-liveness-tracking-enabled=true \
     --rest-api-cors-origins=* \
     --rest-api-interface=0.0.0.0 \
     --rest-api-port=3500 \
