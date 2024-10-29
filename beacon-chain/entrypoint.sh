@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CHECKPOINT_SYNC_KEY="--initial-state"
+CHECKPOINT_SYNC_KEY="--checkpoint-sync-url"
 MEVBOOST_FLAG_KEYS="--builder-endpoint"
 
 # shellcheck disable=SC1091 # Path is relative to the Dockerfile
