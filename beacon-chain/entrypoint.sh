@@ -35,6 +35,7 @@ FLAGS="--network=$NETWORK \
     --metrics-port=8008 \
     --metrics-host-allowlist=* \
     --log-destination=CONSOLE \
+    --ignore-weak-subjectivity-period-enabled \
     --validators-proposer-default-fee-recipient=$VALID_FEE_RECIPIENT $CHECKPOINT_SYNC_FLAG $MEVBOOST_FLAG $EXTRA_OPTS"
 
 echo "[INFO - entrypoint] Starting beacon with flags: $FLAGS"
