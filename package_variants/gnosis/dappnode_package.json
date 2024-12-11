@@ -6,9 +6,5 @@
     "homepage": "https://docs.teku.consensys.net",
     "readme": "https://github.com/ConsenSys/teku/blob/master/README.md",
     "docs": "https://docs.teku.consensys.net"
-  },
-  "optionalDependencies": {
-    "nethermind-xdai.dnp.dappnode.eth": ">=1.0.48",
-    "gnosis-erigon.dnp.dappnode.eth": ">=0.1.2"
   }
 }
