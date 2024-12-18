@@ -2,7 +2,7 @@
   "upstream": [
     {
       "repo": "ConsenSys/teku",
-      "version": "24.8.0",
+      "version": "24.12.1",
       "arg": "UPSTREAM_VERSION"
     }
   ],
@@ -30,5 +30,5 @@
   },
   "requirements": {
     "minimumDappnodeVersion": "0.2.101"
-  },
+  }
 }
