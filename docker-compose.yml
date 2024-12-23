@@ -28,6 +28,7 @@ services:
       EXTRA_OPTS: ""
       FEE_RECIPIENT_ADDRESS: ""
       JAVA_OPTS: "-Xmx6g"
+      BACKUP_BEACON_NODE: ""
     restart: unless-stopped
     security_opt:
       - seccomp:unconfined
