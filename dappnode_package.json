@@ -2,7 +2,7 @@
   "upstream": [
     {
       "repo": "ConsenSys/teku",
-      "version": "24.12.1",
+      "version": "25.2.0",
       "arg": "UPSTREAM_VERSION"
     }
   ],
