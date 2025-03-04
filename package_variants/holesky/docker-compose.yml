@@ -5,6 +5,7 @@ services:
       args:
         NETWORK: holesky
         P2P_PORT: 9605
+        UPSTREAM_VERSION: develop # holesky fix, see https://github.com/ethereum/pm/blob/master/Pectra/holesky-postmortem.md#holesky-coordinated-slashings
     ports:
       - "9605:9605/tcp"
       - "9605:9605/udp"
