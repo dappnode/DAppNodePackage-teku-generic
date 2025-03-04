@@ -14,5 +14,6 @@ services:
     build:
       args:
         NETWORK: holesky
+        UPSTREAM_VERSION: develop # holesky fix, see https://github.com/ethereum/pm/blob/master/Pectra/holesky-postmortem.md#holesky-coordinated-slashings
 volumes:
   teku-holesky-data: {}
