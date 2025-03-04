@@ -12,5 +12,12 @@
       "envs": ["MEVBOOST_HOLESKY"],
       "services": ["validator", "beacon-chain"]
     }
-  ]
+  ],
+  "upstream": [
+    {
+      "repo": "ConsenSys/teku",
+      "version": "develop",
+      "arg": "UPSTREAM_VERSION"
+    }
+  ],
 }
