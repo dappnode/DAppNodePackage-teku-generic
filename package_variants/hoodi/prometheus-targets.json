@@ -1,0 +1,16 @@
+[
+  {
+    "labels": {
+      "package": "teku-hoodi.dnp.dappnode.eth",
+      "service": "beacon-chain.teku-hoodi.dappnode"
+    },
+    "targets": ["beacon-chain.teku-hoodi.dappnode:8008"]
+  },
+  {
+    "labels": {
+      "package": "teku-hoodi.dnp.dappnode.eth",
+      "service": "validator.teku-hoodi.dappnode"
+    },
+    "targets": ["validator.teku-hoodi.dappnode:8008"]
+  }
+]
