@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SUPPORTED_NETWORKS="gnosis holesky mainnet lukso"
+SUPPORTED_NETWORKS="gnosis holesky hoodi mainnet lukso"
 # MEVBOOST: https://docs.teku.consensys.net/en/latest/HowTo/Builder-Network/
 MEVBOOST_FLAG_KEYS="--validators-builder-registration-default-enabled=true --validators-proposer-blinded-blocks-enabled=true"
 SKIP_MEVBOOST_URL="true"

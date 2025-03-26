@@ -1,0 +1,16 @@
+{
+  "name": "teku-hoodi.dnp.dappnode.eth",
+  "version": "0.1.0",
+  "links": {
+    "ui": "http://brain.web3signer-hoodi.dappnode",
+    "homepage": "https://docs.teku.consensys.net",
+    "readme": "https://github.com/ConsenSys/teku/blob/master/README.md",
+    "docs": "https://docs.teku.consensys.net"
+  },
+  "globalEnvs": [
+    {
+      "envs": ["MEVBOOST_HOODI"],
+      "services": ["validator", "beacon-chain"]
+    }
+  ]
+}
