@@ -5,7 +5,7 @@ services:
       context: beacon-chain
       args:
         UPSTREAM_VERSION: 25.3.0
-        STAKER_SCRIPTS_VERSION: v0.1.0
+        STAKER_SCRIPTS_VERSION: v0.1.2
         DATA_DIR: /opt/teku/data
     environment:
       CHECKPOINT_SYNC_URL: ""
@@ -20,7 +20,7 @@ services:
       context: validator
       args:
         UPSTREAM_VERSION: 25.3.0
-        STAKER_SCRIPTS_VERSION: v0.1.0
+        STAKER_SCRIPTS_VERSION: v0.1.2
         DATA_DIR: /opt/teku/data
     environment:
       LOG_LEVEL: INFO
