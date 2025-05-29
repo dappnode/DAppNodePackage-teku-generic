@@ -1,6 +1,6 @@
 {
   "name": "teku-gnosis.dnp.dappnode.eth",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "links": {
     "ui": "http://brain.web3signer-gnosis.dappnode",
     "homepage": "https://docs.teku.consensys.net",
