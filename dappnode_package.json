@@ -34,6 +34,6 @@
     "onRemove": "Make sure your web3signer does not have this client selected or you will stop validating! (Packages > web3signer > config > client)"
   },
   "requirements": {
-    "minimumDappnodeVersion": "0.2.101"
+    "minimumDappnodeVersion": "0.2.106"
   }
 }
