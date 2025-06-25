@@ -19,7 +19,7 @@ FLAGS="--log-destination=CONSOLE \
   validator-client \
   --network=$NETWORK \
   --data-base-path=$DATA_DIR \
-  --beacon-node-api-endpoint=$BEACON_API_URL \
+  --beacon-node-api-endpoint=$BEACON_API_URL$( [ -n "${BACKUP_BEACON_NODES}" ] && echo ",${BACKUP_BEACON_NODES}" ) \
   --validators-external-signer-url=$SIGNER_API_URL \
   --metrics-enabled=true \
   --metrics-interface=0.0.0.0 \
