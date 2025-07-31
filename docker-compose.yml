@@ -27,6 +27,7 @@ services:
       GRAFFITI: validating_from_DAppNode
       EXTRA_OPTS: ""
       FEE_RECIPIENT_ADDRESS: ""
+      BACKUP_BEACON_NODES: ""
       JAVA_OPTS: "-Xmx6g"
     restart: unless-stopped
     security_opt:
