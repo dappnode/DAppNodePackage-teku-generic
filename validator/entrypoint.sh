@@ -2,7 +2,7 @@
 
 SUPPORTED_NETWORKS="gnosis holesky hoodi mainnet lukso"
 # MEVBOOST: https://docs.teku.consensys.net/en/latest/HowTo/Builder-Network/
-MEVBOOST_FLAG_KEYS="--validators-builder-registration-default-enabled=true --validators-proposer-blinded-blocks-enabled=true"
+MEVBOOST_FLAG_KEYS="--validators-builder-registration-default-enabled=true"
 SKIP_MEVBOOST_URL="true"
 CLIENT="teku"
 
