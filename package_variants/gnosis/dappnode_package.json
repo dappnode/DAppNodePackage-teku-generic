@@ -7,5 +7,10 @@
     "homepage": "https://docs.teku.consensys.net",
     "readme": "https://github.com/ConsenSys/teku/blob/master/README.md",
     "docs": "https://docs.teku.consensys.net"
+  },
+  "optionalDependencies": {
+    "gnosis-erigon.dnp.dappnode.eth": ">=1.0.2",
+    "nethermind-xdai.dnp.dappnode.eth": ">=1.0.69",
+    "web3signer-gnosis.dnp.dappnode.eth": ">=1.0.14"
   }
 }
