@@ -3,7 +3,8 @@
   "version": "0.1.15",
   "requirements": {
     "minimumDappnodeVersion": "0.3.11"
-  },  "links": {
+  },  
+  "links": {
     "ui": "http://brain.web3signer-gnosis.dappnode",
     "homepage": "https://docs.teku.consensys.net",
     "readme": "https://github.com/ConsenSys/teku/blob/master/README.md",
