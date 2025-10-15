@@ -1,8 +1,9 @@
 {
   "name": "teku-gnosis.dnp.dappnode.eth",
   "version": "0.1.15",
-  "minimumDappnodeVersion": "0.3.11",
-  "links": {
+  "requirements": {
+    "minimumDappnodeVersion": "0.3.11"
+  },  "links": {
     "ui": "http://brain.web3signer-gnosis.dappnode",
     "homepage": "https://docs.teku.consensys.net",
     "readme": "https://github.com/ConsenSys/teku/blob/master/README.md",
