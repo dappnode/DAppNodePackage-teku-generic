@@ -1,6 +1,6 @@
 {
   "name": "teku-gnosis.dnp.dappnode.eth",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "requirements": {
     "minimumDappnodeVersion": "0.3.12"
   },
