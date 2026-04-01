@@ -8,8 +8,7 @@ services:
         STAKER_SCRIPTS_VERSION: v0.1.2
         DATA_DIR: /opt/teku/data
     environment:
-      CHECKPOINT_SYNC_URL: ""
-      FEE_RECIPIENT_ADDRESS: ""
+      FEE_RECIPIENT_ADDRESS: "0x0000000000000000000000000000000000000000"
       EXTRA_OPTS: ""
       JAVA_OPTS: "-Xmx6g"
     restart: unless-stopped
@@ -26,7 +25,7 @@ services:
       LOG_LEVEL: INFO
       GRAFFITI: validating_from_DAppNode
       EXTRA_OPTS: ""
-      FEE_RECIPIENT_ADDRESS: ""
+      FEE_RECIPIENT_ADDRESS: "0x0000000000000000000000000000000000000000"
       BACKUP_BEACON_NODES: ""
       JAVA_OPTS: "-Xmx6g"
     restart: unless-stopped

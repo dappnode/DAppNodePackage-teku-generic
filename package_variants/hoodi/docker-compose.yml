@@ -5,8 +5,10 @@ services:
       args:
         NETWORK: hoodi
         P2P_PORT: 9705
+    environment:
+      CHECKPOINT_SYNC_URL: "https://checkpoint-sync-hoodi.dappnode.net"
     ports:
-      - "9705:9705/tcp"
+      - "9705:9705"
       - "9705:9705/udp"
   validator:
     build:
