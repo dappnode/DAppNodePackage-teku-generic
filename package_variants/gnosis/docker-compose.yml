@@ -5,8 +5,10 @@ services:
       args:
         NETWORK: gnosis
         P2P_PORT: 19005
+    environment:
+      CHECKPOINT_SYNC_URL: "https://checkpoint-sync-gnosis.dappnode.net"
     ports:
-      - "19005:19005/tcp"
+      - "19005:19005"
       - "19005:19005/udp"
     volumes:
       - teku-gnosis-data:/opt/teku/data

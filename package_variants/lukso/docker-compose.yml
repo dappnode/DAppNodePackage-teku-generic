@@ -5,8 +5,10 @@ services:
       args:
         NETWORK: lukso
         P2P_PORT: 9905
+    environment:
+      CHECKPOINT_SYNC_URL: "https://checkpoint-sync-lukso.dappnode.net"
     ports:
-      - "9905:9905/tcp"
+      - "9905:9905"
       - "9905:9905/udp"
     volumes:
       - teku-lukso-data:/opt/teku/data
