@@ -1,0 +1,16 @@
+[
+  {
+    "labels": {
+      "package": "teku-ephemery.dnp.dappnode.eth",
+      "service": "beacon-chain.teku-ephemery.dappnode"
+    },
+    "targets": ["beacon-chain.teku-ephemery.dappnode:8008"]
+  },
+  {
+    "labels": {
+      "package": "teku-ephemery.dnp.dappnode.eth",
+      "service": "validator.teku-ephemery.dappnode"
+    },
+    "targets": ["validator.teku-ephemery.dappnode:8008"]
+  }
+]
