@@ -1,6 +1,13 @@
 {
   "name": "teku-lukso.dnp.dappnode.eth",
   "version": "0.1.4",
+  "upstream": [
+    {
+      "repo": "ConsenSys/teku",
+      "version": "26.2.0",
+      "arg": "UPSTREAM_VERSION"
+    }
+  ],
   "links": {
     "ui": "http://brain.web3signer-lukso.dappnode",
     "homepage": "https://docs.teku.consensys.net",
