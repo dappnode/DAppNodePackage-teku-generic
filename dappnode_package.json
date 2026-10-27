@@ -31,7 +31,7 @@
     {
       "arg": "UPSTREAM_VERSION",
       "repo": "ConsenSys/teku",
-      "version": "26.10.2"
+      "version": "26.10.3"
     },
     {
       "arg": "STAKER_SCRIPTS_VERSION",
